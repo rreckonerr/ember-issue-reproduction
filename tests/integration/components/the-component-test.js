@@ -28,6 +28,21 @@ module("Integration | Component | the-component", function(hooks) {
 
     set(this, "content", "Updated content");
 
-    assert.dom(`[some-content]`).doesNotContainText("Updated content");
+    assert
+      .dom(`[some-content]`)
+      .doesNotContainText("Updated content", "'content' value is not set");
+
+    assert
+      .dom(`[some-content]`)
+      .hasText("Some content", "'content' still has the old value");
+
+    setTimeout(() => {
+      assert
+        .dom(`[some-content]`)
+        .hasText(
+          "Updated content",
+          "'content' prop gets updated only in the next tick"
+        );
+    });
   });
 });
